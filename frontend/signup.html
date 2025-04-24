@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | SEN Prep</title>
+  <!-- Link to a separate CSS file for styling (signup.css) -->
+  <link rel="stylesheet" href="signup.css" />
+</head>
+
+<body>
+  <div class="signup-container">
+    <h2>Create an Account</h2>
+    <form id="signupForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <!-- Optional: Link to login page -->
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch("http://localhost:5000/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("User created successfully! Please log in.");
+          window.location.href = "login.html";
+        } else {
+          alert(data.error || "Signup failed");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong");
+      }
+    });
+  </script>
+</body>
+
+</html>
